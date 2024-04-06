@@ -232,5 +232,6 @@ namespace _4RTools.Utils
         DANCE_WITH_WUG = 441,
         SIT = 622,
 
+        ANTI_BOT = 5020,
     }
 }

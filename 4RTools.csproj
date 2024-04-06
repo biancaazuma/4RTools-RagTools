@@ -369,6 +369,7 @@
     </Compile>
     <Compile Include="Model\AHK.cs" />
     <Compile Include="Model\ATKDEFMode.cs" />
+    <Compile Include="Model\AutoPause.cs" />
     <Compile Include="Model\AutoSwitch.cs" />
     <Compile Include="Model\Autopot.cs" />
     <Compile Include="Model\Autobuff.cs" />

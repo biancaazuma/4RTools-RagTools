@@ -14,6 +14,10 @@ namespace _4RTools.Forms
         private ContextMenu contextMenu;
         private MenuItem menuItem;
 
+        private readonly AutoPause autoPause = new AutoPause();
+        private bool prevStatus = false;
+        private bool prevStatusHeal = false;
+
         //Store key used for last profile - necessarly to clean when change profile
         private Keys lastKey;
         private Keys healLastKey;
@@ -35,6 +39,7 @@ namespace _4RTools.Forms
             this.txtStatusHealToggleKey.KeyDown += new KeyEventHandler(FormUtils.OnKeyDown);
             this.txtStatusHealToggleKey.KeyPress += new KeyPressEventHandler(FormUtils.OnKeyPress);
             this.txtStatusHealToggleKey.TextChanged += new EventHandler(this.onStatusHealToggleKeyChange);
+            this.autoPause.AntiBot += new EventHandler<AutoPause.AntiBotEventArgs>(this.onAntiBot);
 
             InitializeContextualMenu();
         }
@@ -91,6 +96,7 @@ namespace _4RTools.Forms
         private bool toggleStatus()
         {
             bool isOn = this.btnStatusToggle.Text == "ON";
+            prevStatus = isOn;
             if (isOn)
             {
                 this.btnStatusToggle.BackColor = Color.Red;
@@ -113,6 +119,7 @@ namespace _4RTools.Forms
                     this.lblStatusToggle.Text = "Press the key to stop!";
                     this.lblStatusToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
                     new SoundPlayer(Resources._4RTools.ETCResource.Speech_On).Play();
+                    this.autoPause.Start();
                 }
                 else
                 {
@@ -124,33 +131,35 @@ namespace _4RTools.Forms
             return true;
         }
 
-        public bool TurnOFF()
+        public void TurnOFF()
         {
             bool isOn = this.btnStatusToggle.Text == "ON";
             if (isOn)
             {
-                this.btnStatusToggle.BackColor = Color.Red;
-                this.btnStatusToggle.Text = "OFF";
-                this.notifyIconTray.Icon = Resources._4RTools.ETCResource.logo_4rtools_off;
-                this.subject.Notify(new Utils.Message(MessageCode.TURN_OFF, null));
-                this.lblStatusToggle.Text = "Press the key to start!";
-                this.lblStatusToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
-                new SoundPlayer(Resources._4RTools.ETCResource.Speech_Off).Play();
+                this.toggleStatus();
             }
 
             bool isOnheal = this.btnStatusHealToggle.Text == "ON";
             if (isOnheal)
             {
-                this.btnStatusHealToggle.BackColor = Color.Red;
-                this.btnStatusHealToggle.Text = "OFF";
-                this.subject.Notify(new Utils.Message(MessageCode.TURN_HEAL_OFF, null));
-                this.lblStatusHealToggle.Text = "Press the key to start healing!";
-                this.lblStatusHealToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
-                new SoundPlayer(Resources._4RTools.ETCResource.Healing_Off).Play();
+                this.toggleStatusHeal();
             }
-            return true;
         }
 
+        private void onAntiBot(object sender, AutoPause.AntiBotEventArgs e)
+        {
+            this.Invoke(new MethodInvoker(delegate {
+                if (e.Status)
+                {
+                    this.TurnOFF();
+                }
+                else
+                {
+                    if (prevStatus) this.toggleStatus();
+                    if (prevStatusHeal) this.toggleStatusHeal();
+                }
+            }));
+        }
 
         private void btnToggleStatusHealHandler(object sender, EventArgs e) { this.toggleStatusHeal(); }
 
@@ -169,6 +178,7 @@ namespace _4RTools.Forms
         private bool toggleStatusHeal()
         {
             bool isOn = this.btnStatusHealToggle.Text == "ON";
+            prevStatusHeal = isOn;
             if (isOn)
             {
                 this.btnStatusHealToggle.BackColor = Color.Red;
