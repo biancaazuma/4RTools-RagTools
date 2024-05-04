@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using _4RTools.Utils;
+using System.Media;
 
 namespace _4RTools.Model
 {
@@ -16,6 +17,10 @@ namespace _4RTools.Model
         private _4RThread thread;
         public int delay { get; set; } = 1;
         public Dictionary<EffectStatusIDs, Key> buffMapping = new Dictionary<EffectStatusIDs, Key>();
+
+        private List<EffectStatusIDs> buffsAlreadyAcquired = new List<EffectStatusIDs>() { };
+        private List<EffectStatusIDs> buffsToWatch = new List<EffectStatusIDs>() { };
+
 
         public void Start()
         {
@@ -40,6 +45,7 @@ namespace _4RTools.Model
                 bool foundDecreaseAgi = false;
                 List<uint> buffs = new List<uint>();
                 Dictionary<EffectStatusIDs, Key> bmClone = new Dictionary<EffectStatusIDs, Key>(this.buffMapping);
+                List<EffectStatusIDs> buffsToWatchClone = new List<EffectStatusIDs>(this.buffsToWatch);
                 for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
                 {
                     uint currentStatus = c.CurrentBuffStatusCode(i);
@@ -61,7 +67,16 @@ namespace _4RTools.Model
                         bmClone.Remove(EffectStatusIDs.EDEN);
                     }
 
+                    if (buffsToWatch.Contains(status) && !buffsAlreadyAcquired.Contains(status))
+                    {
+                        buffsAlreadyAcquired.Add(status);
+                        new SoundPlayer(Resources._4RTools.ETCResource.Speech_On).Play();
+                    }
 
+                    if (buffsToWatch.Contains(status)) //remove current buff from the list 
+                    {
+                        buffsToWatchClone.Remove(status);
+                    }
 
                     if (buffMapping.ContainsKey(status)) //CHECK IF STATUS EXISTS IN STATUS LIST AND DO ACTION
                     {
@@ -72,6 +87,16 @@ namespace _4RTools.Model
                     if (status == EffectStatusIDs.DECREASE_AGI) foundDecreaseAgi = true;
                 }
                 buffs.Clear();
+
+                foreach (var buff in buffsToWatchClone) // buffs that are listed but the player doesn't have
+                {
+                    if (buffsAlreadyAcquired.Contains(buff))
+                    {
+                        buffsAlreadyAcquired.Remove(buff);
+                        new SoundPlayer(Resources._4RTools.ETCResource.Speech_Off).Play();
+                    }
+                }
+
                 foreach (var item in bmClone)
                 {
                     if (foundQuag && (item.Key == EffectStatusIDs.CONCENTRATION || item.Key == EffectStatusIDs.INC_AGI || item.Key == EffectStatusIDs.TRUESIGHT || item.Key == EffectStatusIDs.ADRENALINE || item.Key == EffectStatusIDs.SPEARQUICKEN || item.Key == EffectStatusIDs.WINDWALK))
@@ -108,6 +133,18 @@ namespace _4RTools.Model
                 buffMapping.Add(status, key);
             }
         }
+
+        public void AddStatusToSoundBuff(EffectStatusIDs status)
+        {
+            if (buffsToWatch.Contains(status))
+            {
+                buffsToWatch.Remove(status);
+                return;
+            }
+
+            buffsToWatch.Add(status);
+        }
+
         public void ClearKeyMapping()
         {
             buffMapping.Clear();

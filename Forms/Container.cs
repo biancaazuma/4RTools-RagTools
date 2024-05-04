@@ -36,6 +36,7 @@ namespace _4RTools.Forms
             SetAutoBuffStatusWindow();
             SetProfileWindow();
             SetAutobuffStuffWindow();
+            SetSoundBuffSkillWindow();
             SetAutobuffSkillWindow();
             SetSongMacroWindow();
             SetATKDEFWindow();
@@ -285,6 +286,16 @@ namespace _4RTools.Forms
             frm.MdiParent = this;
             frm.Show();
             addform(this.tabPageAutobuffStuff, frm);
+        }
+
+        public void SetSoundBuffSkillWindow()
+        {
+            SoundBuffSkillForm frm = new SoundBuffSkillForm(subject);
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Location = new Point(0, 65);
+            frm.MdiParent = this;
+            addform(this.tabPageSoundSkill, frm);
+            frm.Show();
         }
 
         public void SetAutobuffSkillWindow()

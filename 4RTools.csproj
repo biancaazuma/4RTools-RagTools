@@ -325,6 +325,12 @@
       <DependentUpon>AutoBuffStatusForm.cs</DependentUpon>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Compile>
+    <Compile Include="Forms\SoundBuffSkillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SoundBuffSkillForm.Designer.cs">
+      <DependentUpon>SoundBuffSkillForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StuffAutoBuffForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -360,6 +366,9 @@
       <DependentUpon>AutoBuffStatusForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SoundBuffSkillForm.resx">
+      <DependentUpon>SoundBuffSkillForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\StuffAutoBuffForm.resx">
       <DependentUpon>StuffAutoBuffForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -380,6 +389,7 @@
     <Compile Include="Model\Custom.cs" />
     <Compile Include="Model\LocalServerManager.cs" />
     <Compile Include="Model\DebuffsRecovery.cs" />
+    <Compile Include="Model\SoundBuffRenderer.cs" />
     <Compile Include="Model\StatusRecovery.cs" />
     <!-- <Compile Include="Model\Tracker.cs" /> -->
     <Compile Include="Model\UserPreferences.cs" />

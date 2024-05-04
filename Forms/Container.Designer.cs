@@ -33,6 +33,7 @@ namespace _4RTools.Forms
             System.Windows.Forms.TabControl atkDefMode;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Container));
             this.tabPageSpammer = new System.Windows.Forms.TabPage();
+            this.tabPageSoundSkill = new System.Windows.Forms.TabPage();
             this.tabPageAutobuffSkill = new System.Windows.Forms.TabPage();
             this.tabPageAutobuffStuff = new System.Windows.Forms.TabPage();
             this.tabPageMacroSongs = new System.Windows.Forms.TabPage();
@@ -71,6 +72,7 @@ namespace _4RTools.Forms
             // atkDefMode
             // 
             atkDefMode.Controls.Add(this.tabPageSpammer);
+            atkDefMode.Controls.Add(this.tabPageSoundSkill);
             atkDefMode.Controls.Add(this.tabPageAutobuffSkill);
             atkDefMode.Controls.Add(this.tabPageAutobuffStuff);
             atkDefMode.Controls.Add(this.tabPageMacroSongs);
@@ -103,6 +105,16 @@ namespace _4RTools.Forms
             this.tabPageAutobuffSkill.Size = new System.Drawing.Size(629, 274);
             this.tabPageAutobuffSkill.TabIndex = 3;
             this.tabPageAutobuffSkill.Text = "Autobuff - Skills";
+            // 
+            // tabPageSoundSkill
+            // 
+            this.tabPageSoundSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(45)))), ((int)(((byte)(49)))));
+            this.tabPageSoundSkill.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSoundSkill.Name = "tabPageSoundSkill";
+            this.tabPageSoundSkill.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSoundSkill.Size = new System.Drawing.Size(629, 274);
+            this.tabPageSoundSkill.TabIndex = 3;
+            this.tabPageSoundSkill.Text = "Sound - Skills";
             // 
             // tabPageAutobuffStuff
             // 
@@ -441,6 +453,7 @@ namespace _4RTools.Forms
         private System.Windows.Forms.ComboBox processCB;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.TabPage tabPageSpammer;
+        private System.Windows.Forms.TabPage tabPageSoundSkill;
         private System.Windows.Forms.LinkLabel lblLinkDiscord;
         private System.Windows.Forms.LinkLabel lblLinkGithub;
         private System.Windows.Forms.Panel panelDiscImage;
